@@ -11,46 +11,46 @@ const totalHealth = 10
 function App() {
   const [playerHealth, setPlayerHealth] = useState(10);
   const [enemyHealth, setEnemyHealth] = useState(10);
-  const [playerCards, setPlayerCards] = useState([
-    { id: 1, name: "Card 1", damage: 1 },
-    { id: 2, name: "Card 2", damage: 1 },
-    { id: 3, name: "Card 3", damage: 1 },
-    { id: 4, name: "Card 4", damage: 2 },
-    { id: 5, name: "Card 5", damage: 2 },
-    { id: 6, name: "Card 6", damage: 3 },
-    { id: 7, name: "Card 7", damage: 3 },
-    { id: 8, name: "Card 8", damage: 3 },
-    { id: 9, name: "Card 9", damage: 5 },
-    { id: 10, name: "Card 10", damage: 5 },
-  ]);
-  const [selectedCard, setSelectedCard] = useState([]);
+  let playerCards = [
+    { id: 1, name: "Kick", damage: 1 },
+    { id: 2, name: "Kick", damage: 1 },
+    { id: 3, name: "Kick", damage: 1 },
+    { id: 4, name: "Blow", damage: 2 },
+    { id: 5, name: "Blow", damage: 2 },
+    { id: 6, name: "Blow", damage: 3 },
+    { id: 7, name: "Blow", damage: 3 },
+    { id: 8, name: "Blow", damage: 3 },
+    { id: 9, name: "Super smash", damage: 5 },
+    { id: 10, name: "Super smash", damage: 5 },
+  ]
+
+  const [selectedCard, setSelectedCard] = useState(null);
   const [dealedCards, setDealedCards] = useState([]);
   const [turn, setTurn] = useState(1);
 
   const handleSelectCard = (card) => {
-    setSelectedCard([card]);
+    setSelectedCard(card);
   };
 
   const handleAttack = () => {
-    if (selectedCard.length === 0) {
+
+    if (!selectedCard) {
       alert("Please select at least one card to play.");
       return;
     }
 
-    let totalDamage = 0;
-    selectedCard.forEach((card) => {
-      totalDamage += card.damage;
-    });
-    setEnemyHealth(enemyHealth - totalDamage);
-    setSelectedCard([]);
+    setEnemyHealth(enemyHealth - selectedCard.damage);
+    setSelectedCard(null);
     setDealedCards([])
     setTurn(turn + 1);
+
   };
 
   const dealCards = () => {
     const cards = [];
     for (let i = 0; i < 3; i++) {
-      let randomCard = playerCards[Math.floor(Math.random() * playerCards.length)];
+      let randomCard = playerCards.splice(Math.floor(Math.random() * playerCards.length), 1)[0];
+      console.log(randomCard)
       cards.push(randomCard);
     }
     setDealedCards(cards);
@@ -63,7 +63,7 @@ function App() {
   const renderCards = () => {
     return dealedCards.map((card) => {
       return (
-        <Card key={card.id} card={card} handleSelectCard={handleSelectCard}/>
+        <Card key={card.id} card={card} handleSelectCard={handleSelectCard} selectedCard={selectedCard}/>
       );
     });
   };
@@ -72,36 +72,34 @@ function App() {
 
 
   return (
-    <div className="App container h-screen bg-gray-400 flex justify-center">
-      <div className='w-fit h-fit bg-white rounded-lg border-2 border-black p-3'>
+    <div className="App h-screen bg-gray-400 flex justify-center">
+
+      <div className='relative w-fit h-screen bg-stone-500 rounded-lg border-2 border-black p-3'>
         {enemyHealth <= 0 && (
-          <div className="absolute top-0 left-0 w-32 h-32 bg-white flex justify-center items-center">
+          <div className="absolute top-1/2 left-1/2 w-fit h-fit bg-white flex flex-col justify-center items-center rounded-lg shadow-lg p-3">
             <h1 className="text-5xl">You Win!</h1>
-            <button onClick={() => setEnemyHealth(10)}>Play Again</button>
+            <button className="bg-green-400 rounded-lg p-1 border-black border-2 hover:bg-green-600"onClick={() => setEnemyHealth(10)}>Play Again</button>
           </div>
 
         )}
 
+        <div className='flex flex-col justify-center items-center '>
 
-          <div>
-            <div>Select Cards:</div>
-            <div className='flex flex-row bg-green-400'>
-              {renderCards()}
-            </div>
+          <div>Turn - {turn} </div>
+          <p>Select Cards:</p>
+          <div className='flex flex-row justify-center'>
+            {renderCards()}
           </div>
-          <div>
-            <div>Selected Cards:</div>
-            <div>
-              {selectedCard[0] && <Card id={selectedCard[0].id} card={selectedCard[0]} />}
-            </div>
-          </div>
-          <button onClick={handleAttack} disabled={selectedCard.length === 0} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>
+          <button onClick={handleAttack} className='bg-stone-400 w-24 hover:bg-stone-600 text-white font-bold py-2 px-4 rounded mt-3 shadow-lg'>
             Attack
           </button>
-          <div className='grid grid-cols-2 gap-10 mt-10 mb-10 content-end'>
-            <Hero health={playerHealth}/>
-            <Enemy health={enemyHealth} totalHealth={totalHealth}/>
-          </div>
+        </div>
+
+        <div className='grid grid-cols-2 gap-20 h-full content-center'>
+          <Hero health={playerHealth}/>
+          <Enemy health={enemyHealth} totalHealth={totalHealth}/>
+        </div>
+
       </div>
     </div>
   )
