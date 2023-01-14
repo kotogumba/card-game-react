@@ -11,6 +11,7 @@ const totalHealth = 10
 function App() {
   const [playerHealth, setPlayerHealth] = useState(10);
   const [enemyHealth, setEnemyHealth] = useState(10);
+  console.log('rendering App')
   let playerCards = [
     { id: 1, name: "Kick", damage: 1 },
     { id: 2, name: "Kick", damage: 1 },
@@ -50,7 +51,6 @@ function App() {
     const cards = [];
     for (let i = 0; i < 3; i++) {
       let randomCard = playerCards.splice(Math.floor(Math.random() * playerCards.length), 1)[0];
-      console.log(randomCard)
       cards.push(randomCard);
     }
     setDealedCards(cards);

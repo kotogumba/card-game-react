@@ -12,7 +12,7 @@ function Enemy({health, totalHealth}) {
 
 
   return (
-    <div className='bg-white rounded-lg border-2 border-black w-fit h-fit p-3'>
+    <div className='bg-white rounded-lg border-2 border-black w-50 h-60 p-3'>
       <h1> Myron </h1>
       <p> {hearts} </p>
       <img src={enemy} alt="enemy" className='h-32 w-25'/>
