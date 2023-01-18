@@ -74,7 +74,7 @@ function App() {
   return (
     <div className="App h-screen bg-gray-400 flex justify-center">
 
-      <div className='relative w-fit h-screen bg-stone-500 rounded-lg border-2 border-black p-3'>
+      <div className='relative w-fit h-fit bg-stone-500 rounded-lg border-2 border-black p-3'>
         {enemyHealth <= 0 && (
           <div className="absolute top-1/2 left-1/2 w-fit h-fit bg-white flex flex-col justify-center items-center rounded-lg shadow-lg p-3">
             <h1 className="text-5xl">You Win!</h1>
@@ -95,7 +95,7 @@ function App() {
           </button>
         </div>
 
-        <div className='grid grid-cols-2 gap-20 h-full content-center'>
+        <div className='grid grid-cols-2 gap-20 content-center'>
           <Hero health={playerHealth}/>
           <Enemy health={enemyHealth} totalHealth={totalHealth}/>
         </div>
